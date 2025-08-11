@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "strict": true,
+        "target": "esnext",
+        "module": "nodenext",
+        "skipDefaultLibCheck": true,
+        "outDir": "../../dist-electron"
+    },
+}
