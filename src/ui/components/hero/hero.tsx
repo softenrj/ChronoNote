@@ -8,7 +8,7 @@ function Hero() {
     return (
         <Box>
             <Center py={10}>
-                <VStack w="full">
+                <VStack w="80%">
                     {/* spotlight */}
                     <Box
                         h={4}
@@ -21,6 +21,7 @@ function Hero() {
                         color="white"
                         fontFamily="'Pacifico', cursive"
                         fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
+                        textAlign={'center'}
                         css={{
                             ".Typewriter__wrapper span": {
                                 opacity: 0,
@@ -44,8 +45,6 @@ function Hero() {
                             }}
                         />
                     </Text>
-
-
                 </VStack>
             </Center>
         </Box>
