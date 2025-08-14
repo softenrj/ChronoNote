@@ -8,7 +8,6 @@ function App() {
   return (
     <Box>
       <Hero />
-      <AddNew />
       <TaskList />
     </Box>
   )

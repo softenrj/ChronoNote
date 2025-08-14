@@ -11,6 +11,7 @@ import {
   useSelectContext,
   Icon,
 } from "@chakra-ui/react"
+import type { SetStateAction } from "react"
 import {
   RiForbidLine,
   RiAlertFill,
@@ -18,6 +19,7 @@ import {
   RiInformationLine,
   RiEmotionHappyLine,
 } from "react-icons/ri"
+import { TaskPriority, type ITask } from "../../../feature/store/reducer/task"
 
 const SelectTrigger = () => {
   const select = useSelectContext()
@@ -36,20 +38,25 @@ const SelectTrigger = () => {
   )
 }
 
-export const SelectRoot = () => {
+export const SelectRoot = ({ setTaskForm }: { setTaskForm: React.Dispatch<SetStateAction<ITask>> }) => {
   return (
     <Select.Root
-      positioning={{ sameWidth: false }}
+      positioning={{ strategy: "fixed", hideWhenDetached: true }}
       collection={priorityLevels}
       size="sm"
       defaultValue={["important"]}
       maxW={20}
+      onSelect={(e) => {
+        const selectedPriority = priorityLevels.items.find(item => item.value === e.value);
+        if (selectedPriority) {
+          setTaskForm(prev => ({ ...prev, priority: selectedPriority.value }));
+        }
+      }}
     >
       <Select.HiddenSelect />
       <Select.Control>
         <SelectTrigger />
       </Select.Control>
-      <Portal>
         <Select.Positioner>
           <Select.Content minW="48" bg="#1f2937" color="white" borderRadius="md">
             {priorityLevels.items.map((priority) => (
@@ -76,8 +83,7 @@ export const SelectRoot = () => {
             ))}
           </Select.Content>
         </Select.Positioner>
-      </Portal>
-    </Select.Root>
+    </Select.Root >
   )
 }
 
@@ -85,7 +91,7 @@ export const priorityLevels = createListCollection({
   items: [
     {
       label: "Important",
-      value: "important",
+      value: TaskPriority.Important,
       icon: <RiErrorWarningLine />,
       description: "Needs your attention soon",
       color: "#fca5a5", // soft red
@@ -93,7 +99,7 @@ export const priorityLevels = createListCollection({
     },
     {
       label: "Moderate",
-      value: "moderate",
+      value: TaskPriority.Moderate,
       icon: <RiAlertFill />,
       description: "Handle when you can",
       color: "#fbbf24", // soft amber
@@ -101,7 +107,7 @@ export const priorityLevels = createListCollection({
     },
     {
       label: "Low Priority",
-      value: "low",
+      value: TaskPriority.Low,
       icon: <RiInformationLine />,
       description: "No rush, take your time",
       color: "#93c5fd", // soft blue
@@ -109,7 +115,7 @@ export const priorityLevels = createListCollection({
     },
     {
       label: "Chill Mode",
-      value: "chill",
+      value: TaskPriority.Chill,
       icon: <RiEmotionHappyLine />,
       description: "Sit back & relax",
       color: "#a7f3d0", // soft mint
@@ -118,7 +124,7 @@ export const priorityLevels = createListCollection({
   ],
 })
 
-interface PriorityOption {
+export interface PriorityOption {
   label: string
   value: string
   icon: React.ReactNode

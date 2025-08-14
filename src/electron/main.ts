@@ -1,37 +1,54 @@
-import { app, BrowserWindow } from "electron"
-import path from "path"
+import { app, BrowserWindow, ipcMain } from "electron";
+import path from "path";
+import Store from "electron-store";
+import { fileURLToPath } from "url";
 import { getRunTimeEnv } from "./util.js";
 
-function createWindow () {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+function createWindow() {
   const win = new BrowserWindow({
     width: 800,
     height: 600,
-    // webPreferences: {
-    //   preload: path.join(__dirname, 'preload.js')
-    // }
-  })
+    webPreferences: {
+      preload: path.join(__dirname, "preload.cjs"),
+      contextIsolation: true,
+      nodeIntegration: false
+    }
+  });
 
-  const filePath = path.join(app.getAppPath() , "/dist-react/index.html");
-  const isdev = getRunTimeEnv();
-  if (isdev) {
-    win.loadURL('http://localhost:5124')
+  const store = new Store({ name: "tasks" });
+
+  ipcMain.handle("get-tasks", () => {
+    return store.get("tasks") || [];
+  });
+
+  ipcMain.on("save-tasks", (event, tasks) => {
+    store.set("tasks", tasks || []);
+  });
+
+  const filePath = path.join(app.getAppPath(), "/dist-react/index.html");
+  const isDev = getRunTimeEnv();
+  if (isDev) {
+    win.loadURL("http://localhost:5124");
   } else {
-    win.loadFile(filePath)
+    win.loadFile(filePath);
   }
 }
 
 app.whenReady().then(() => {
-  createWindow()
+  createWindow();
 
-  app.on('activate', () => {
+  app.on("activate", () => {
     if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow()
+      createWindow();
     }
-  })
-})
+  });
+});
 
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit()
+app.on("window-all-closed", () => {
+  if (process.platform !== "darwin") {
+    app.quit();
   }
-})
+});
