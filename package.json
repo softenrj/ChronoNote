@@ -1,9 +1,12 @@
 {
-  "name": "notepad",
+  "name": "chrono-note",
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "main": "dist-electron/main",
+  "main": "dist-electron/main.js",
+  "description": "A modern note-taking app with task management.",
+  "author": "Raj rjsharmase@gmail.com",
+  "license": "MIT",
   "scripts": {
     "dev": "npm-run-all --parallel dev:electron dev:react",
     "dev:react": "vite",
@@ -12,13 +15,13 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "transpile:electron": "tsc --project src/electron/tsconfig.json"
+    "transpile:electron": "tsc --project src/electron/tsconfig.json",
+    "buildApp:win": "npm run transpile:electron && npm run build && electron-builder build --win --x64"
   },
   "dependencies": {
     "@chakra-ui/react": "^3.24.2",
     "@emotion/react": "^11.14.0",
     "@reduxjs/toolkit": "^2.8.2",
-    "electron": "^37.2.6",
     "electron-store": "^10.1.0",
     "next-themes": "^0.4.6",
     "react": "^19.1.0",
@@ -36,6 +39,7 @@
     "@types/react-dom": "^19.1.6",
     "@vitejs/plugin-react": "^4.6.0",
     "cross-env": "^10.0.0",
+    "electron-builder": "^26.0.12",
     "eslint": "^9.30.1",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
@@ -44,6 +48,7 @@
     "typescript": "~5.8.3",
     "typescript-eslint": "^8.35.1",
     "vite": "^7.0.4",
-    "vite-tsconfig-paths": "^5.1.4"
+    "vite-tsconfig-paths": "^5.1.4",
+    "electron": "^37.2.6"
   }
 }

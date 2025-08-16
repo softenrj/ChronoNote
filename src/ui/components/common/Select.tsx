@@ -38,13 +38,13 @@ const SelectTrigger = () => {
   )
 }
 
-export const SelectRoot = ({ setTaskForm }: { setTaskForm: React.Dispatch<SetStateAction<ITask>> }) => {
+export const SelectRoot = ({ setTaskForm, selected }: { setTaskForm: React.Dispatch<SetStateAction<ITask>>, selected: string }) => {
   return (
     <Select.Root
       positioning={{ strategy: "fixed", hideWhenDetached: true }}
       collection={priorityLevels}
       size="sm"
-      defaultValue={["important"]}
+      defaultValue={[selected]}
       maxW={20}
       onSelect={(e) => {
         const selectedPriority = priorityLevels.items.find(item => item.value === e.value);

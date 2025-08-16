@@ -7,7 +7,7 @@ import { useAppSelector } from '../../../hooks/redux'
 
 function TaskList() {
     const [open, setOpen] = React.useState(false);
-    const tasks = useAppSelector(state => state.taskSlice);
+    const tasks = useAppSelector(state => state.task);
     return (
         <>
             <Box px={8} py={6} bg="#0f1a29" minH="100vh">
@@ -29,12 +29,8 @@ function TaskList() {
                     {tasks && Array.isArray(tasks) && tasks.length > 0 && tasks.map(
                         item => (
                             <TaskItem
-                                uid={item.uid}
-                                title={item.title}
-                                priorityLabel={item.priority}
-                                description={item.description}
-                                dueDate={new Date(item.deadline).toDateString()}
-                                completed={item.isCompleted}
+                                key={item.uid}
+                                task={item}
                             />
                         )
                     )}

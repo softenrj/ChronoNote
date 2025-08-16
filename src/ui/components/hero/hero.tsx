@@ -1,17 +1,34 @@
-import { Box, Center, Text, VStack } from "@chakra-ui/react";
+import { Box, Button, Center, Text, VStack } from "@chakra-ui/react";
 import React from "react";
 import Typewriter from "typewriter-effect";
+import { useAppSelector } from "../../../hooks/redux";
+import { RiStackshareLine } from "react-icons/ri";
+import { Tooltip } from "../ui/tooltip";
 
 function Hero() {
-    const [latestTask, setLatestTask] = React.useState("Complete this Current Project Ok");
+    const task = useAppSelector(state => state.task);
+    const [topTask, setTopTask] = React.useState("What is the top task? 😙");
+    React.useEffect(() => {
+        if(task && Array.isArray(task) && task.length > 0) {
+            setTopTask(task[0].title)
+        }
+    },[task])
+
+    const handleClick = () => {
+    (window as any).taskAPI.toggleAlwaysOnTop();
+  };
 
     return (
         <Box>
+            <Tooltip content="Toggle Always-on-Top">
+                <Button pos={'absolute'} margin={2} onClick={handleClick} size={'xs'} variant={'subtle'} colorPalette={'green'}><RiStackshareLine /></Button>
+            </Tooltip>
             <Center py={10}>
                 <VStack w="80%">
                     {/* spotlight */}
                     <Box
                         h={4}
+                        mb={2}
                         w="80%"
                         bg="white"
                         boxShadow="var(--shadow-elevation-high)"
@@ -19,7 +36,7 @@ function Hero() {
 
                     <Text
                         color="white"
-                        fontFamily="'Pacifico', cursive"
+                        fontFamily="'Delius', cursive"
                         fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
                         textAlign={'center'}
                         css={{
@@ -37,7 +54,7 @@ function Hero() {
                     >
                         <Typewriter
                             onInit={(typewriter) => {
-                                typewriter.typeString(latestTask).start();
+                                typewriter.typeString(topTask).start();
                             }}
                             options={{
                                 cursor: "",

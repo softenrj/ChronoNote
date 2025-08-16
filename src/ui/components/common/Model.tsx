@@ -3,9 +3,10 @@ import React from 'react'
 import AddNew from './AddNew';
 import { CgAdd } from 'react-icons/cg';
 import { Tooltip } from '../ui/tooltip';
-import { addTask, TaskPriority, type ITask } from '../../../feature/store/reducer/task';
-import { useAppDispatch } from '../../../hooks/redux';
+import { addTask, editTask, TaskPriority, type ITask } from '../../../feature/store/reducer/task';
+import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import toast from 'react-hot-toast';
+import { TbEdit } from "react-icons/tb";
 
 interface Props {
     open: boolean;
@@ -29,10 +30,15 @@ function Model({
         isCompleted: false
     });
     const dispatch = useAppDispatch();
+    const tasks = useAppSelector(state => state.task)
 
     const handleSubmit = () => {
         toast.success("Task created");
-        dispatch(addTask(taskForm))
+        if (isEdit) {
+            dispatch(editTask(taskForm))
+        } else {
+            dispatch(addTask(taskForm))
+        }
         setTaskForm({
             uid: '',
             title: '',
@@ -43,6 +49,19 @@ function Model({
         })
         close();
     }
+
+    const handlePreLoad = () => {
+        const task = tasks.find(item => item.uid === taskUid);
+        if (task && typeof task !== 'undefined') {
+            setTaskForm(task);
+        }
+    }
+
+    React.useEffect(() => {
+        if (isEdit && taskUid) {
+            handlePreLoad()
+        }
+    }, [taskUid, open])
 
     return (
         <Dialog.Root open={open} onOpenChange={close} placement={'center'}>
@@ -67,8 +86,10 @@ function Model({
                                     size={'sm'}
                                     onClick={handleSubmit}
                                 >
-                                    <CgAdd />
-                                    Add
+                                    {isEdit ? <>
+                                        <TbEdit /> Update</> : <>
+                                        <CgAdd />
+                                        Add</>}
                                 </Button>
                             </Tooltip>
                         </Dialog.Footer>

@@ -4,7 +4,7 @@ import { persistTasksMiddleware } from '../../middleware/persistence'
 
 export const store = configureStore({
   reducer: {
-    taskSlice
+    task: taskSlice
   },
   middleware: getDefaultMiddleware =>
         getDefaultMiddleware().concat(persistTasksMiddleware)

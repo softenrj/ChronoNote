@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, Menu } from "electron";
 import path from "path";
 import Store from "electron-store";
 import { fileURLToPath } from "url";
@@ -22,6 +22,12 @@ function createWindow() {
     ipcMain.on("save-tasks", (event, tasks) => {
         store.set("tasks", tasks || []);
     });
+    ipcMain.on("toggle-always-on-top", () => {
+        if (win) {
+            const isOnTop = win.isAlwaysOnTop();
+            win.setAlwaysOnTop(!isOnTop);
+        }
+    });
     const filePath = path.join(app.getAppPath(), "/dist-react/index.html");
     const isDev = getRunTimeEnv();
     if (isDev) {
@@ -29,6 +35,9 @@ function createWindow() {
     }
     else {
         win.loadFile(filePath);
+    }
+    if (app.isPackaged) {
+        Menu.setApplicationMenu(null);
     }
 }
 app.whenReady().then(() => {

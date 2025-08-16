@@ -7,7 +7,7 @@ import { type ITask } from '../../../feature/store/reducer/task';
 
 function AddNew({
     setTaskForm,
-    taskForm
+    taskForm,
 }:{
     setTaskForm: React.Dispatch<SetStateAction<ITask>>;
     taskForm: ITask;
@@ -34,7 +34,7 @@ function AddNew({
           autoresize
         />
         <Flex gap={4} flexWrap="wrap">
-          <SelectRoot setTaskForm={setTaskForm} />
+          <SelectRoot selected={taskForm.priority} setTaskForm={setTaskForm} />
           <Box
             bg="rgba(85, 104, 198, 0.86)"
             display="flex"

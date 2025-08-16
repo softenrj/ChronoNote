@@ -1,0 +1,16 @@
+{
+  "appId": "com.softenrj.ChronoNote",
+  "productName": "ChronoNote",
+  "copyright": "Copyright © 2025 softenrj",
+  "icon": "./logo.png",
+  "files": [
+    "dist-react",
+    "dist-electron"
+  ],
+  "directories": {
+    "output": "release"
+  },
+  "win": {
+    "target": ["portable", "msi"]
+  }
+}
