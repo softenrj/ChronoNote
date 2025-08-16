@@ -13,7 +13,7 @@ dist-ssr
 *.local
 
 dist-react 
-dist-electorn
+dist-electron
 release
 
 # Editor directories and files
