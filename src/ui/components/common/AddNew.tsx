@@ -4,20 +4,23 @@ import DatePicker from 'react-datepicker';
 import { SelectRoot } from './Select';
 import { HiCalendarDateRange } from 'react-icons/hi2';
 import { type ITask } from '../../../feature/store/reducer/task';
+import { useColorModeValue } from '../ui/color-mode';
 
 function AddNew({
-    setTaskForm,
-    taskForm,
-}:{
-    setTaskForm: React.Dispatch<SetStateAction<ITask>>;
-    taskForm: ITask;
+  setTaskForm,
+  taskForm,
+}: {
+  setTaskForm: React.Dispatch<SetStateAction<ITask>>;
+  taskForm: ITask;
 }) {
-
 
   const handleDateChange = (newDate: Date | null) => {
     if (newDate) setTaskForm(prev => ({ ...prev, deadline: new Date(newDate).toISOString() }));
   };
 
+  const textColor = useColorModeValue("gray.800", "white");
+  const boxBg = useColorModeValue("blue.100", "rgba(85, 104, 198, 0.86)");
+  const placeholderColor = useColorModeValue("gray.500", "gray.400");
 
   return (
     <Box pos="relative">
@@ -25,7 +28,8 @@ function AddNew({
         <Textarea
           value={taskForm.title}
           onChange={(e) => setTaskForm(prev => ({ ...prev, title: e.target.value }))}
-          color="white"
+          color={textColor}
+          _placeholder={{ color: placeholderColor }}
           variant="flushed"
           size="lg"
           fontSize="lg"
@@ -36,11 +40,11 @@ function AddNew({
         <Flex gap={4} flexWrap="wrap">
           <SelectRoot selected={taskForm.priority} setTaskForm={setTaskForm} />
           <Box
-            bg="rgba(85, 104, 198, 0.86)"
+            bg={boxBg}
             display="flex"
             alignItems="center"
             gap={2}
-            color="white"
+            color={textColor}
             pl={6}
             rounded="sm"
           >
@@ -56,7 +60,8 @@ function AddNew({
         <Textarea
           value={taskForm.description}
           onChange={(e) => setTaskForm(prev => ({ ...prev, description: e.target.value }))}
-          color="white"
+          color={textColor}
+          _placeholder={{ color: placeholderColor }}
           variant="outline"
           autoresize
           size="lg"
