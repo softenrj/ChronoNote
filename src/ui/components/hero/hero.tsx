@@ -10,7 +10,7 @@ function Hero() {
     const [topTask, setTopTask] = React.useState("What is the top task? 😙");
     React.useEffect(() => {
         if(task && Array.isArray(task) && task.length > 0) {
-            setTopTask(task[0].title)
+            setTopTask(task[0].title);
         }
     },[task])
 
